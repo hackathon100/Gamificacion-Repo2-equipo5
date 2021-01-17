@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class asteroid : MonoBehaviour {
-    public float speed = 10.0f;
+    // public float speed = 10.0f;
     private Rigidbody2D rb;
     private Vector2 screenBounds;
    
+ 	// public float speed = 10.0f;
     public int contadorDestruidos;//para saber cuantos se destruyeron
    
 
     // Use this for initialization
     void Start () {
         rb = this.GetComponent<Rigidbody2D>();
-        rb.velocity = new Vector2(-speed, 0);
+        var velocidad  = (GameObject.Find("creador").GetComponent<deployAsteroids>().speed);
+        rb.velocity = new Vector2(-velocidad, 0);
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
 
     }
@@ -25,7 +27,9 @@ public class asteroid : MonoBehaviour {
         if(transform.position.x < ((screenBounds.x * -2)/2)){
         	
         	if(this.gameObject != null){
-
+        			var correct = (GameObject.Find("creador").GetComponent<deployAsteroids>().correcto);
+    	var bad = (GameObject.Find("creador").GetComponent<deployAsteroids>().mal);
+    	var parch = (GameObject.Find("creador").GetComponent<deployAsteroids>().parche);
         		Destroy(this.gameObject);
         		var contA = (GameObject.Find("creador").GetComponent<deployAsteroids>().contador);
 	        	GameObject.Find("creador").GetComponent<deployAsteroids>().contadorDestroyed = contA;
@@ -34,7 +38,12 @@ public class asteroid : MonoBehaviour {
     			var contadorClicks2 =  (GameObject.Find("creador").GetComponent<deployAsteroids>().contadorClicks);
     			if(contA > contadorClicks2){
     				(GameObject.Find("creador").GetComponent<deployAsteroids>().contadorClicks) = (GameObject.Find("creador").GetComponent<deployAsteroids>().contadorClicks) + 1;
-    				Debug.Log("Activando protocolo CTM HDASDKAS");
+    				Debug.Log("paso sin clcick");
+    				var vidaRestante = int.Parse((GameObject.Find("creador").GetComponent<deployAsteroids>().vida).GetComponentInChildren<TextMesh>().text);
+					((GameObject.Find("creador").GetComponent<deployAsteroids>().vida).GetComponentInChildren<TextMesh>().text) = (vidaRestante - 1).ToString();
+    				(correct.GetComponentInChildren<SpriteRenderer>().sortingOrder) = 0;
+		    	 	(bad.GetComponentInChildren<SpriteRenderer>().sortingOrder) = 2;
+		    	 	(parch.GetComponentInChildren<SpriteRenderer>().sortingOrder) = 1;
     			}
         	}
             
@@ -57,6 +66,11 @@ public class asteroid : MonoBehaviour {
     	
 		Debug.Log("QQQQQQQQQQQQQQQQQ" + contC);
     	Debug.Log("EEEEEEEEEEEEEEEEE" + contadorClicks2);
+
+    	var correct = (GameObject.Find("creador").GetComponent<deployAsteroids>().correcto);
+    	var bad = (GameObject.Find("creador").GetComponent<deployAsteroids>().mal);
+    	var parch = (GameObject.Find("creador").GetComponent<deployAsteroids>().parche);
+
     	if(contadorClicks2 + 1 == contC){// && contadorClicks2 == contadorDestroyed
     		// var contB = (GameObject.Find("creador").GetComponent<deployAsteroids>().contador);
         	(GameObject.Find("creador").GetComponent<deployAsteroids>().contadorClicks) = ((GameObject.Find("creador").GetComponent<deployAsteroids>().contadorClicks) + 1);
@@ -80,13 +94,33 @@ public class asteroid : MonoBehaviour {
 
 				var puntajeActual = int.Parse((GameObject.Find("creador").GetComponent<deployAsteroids>().puntaje).GetComponentInChildren<TextMesh>().text);
 				((GameObject.Find("creador").GetComponent<deployAsteroids>().puntaje).GetComponentInChildren<TextMesh>().text) = (puntajeActual + 2).ToString();
-				speed = speed + 1;
+				(GameObject.Find("creador").GetComponent<deployAsteroids>().speed) = (GameObject.Find("creador").GetComponent<deployAsteroids>().speed) + 0.5f;
+				//aca falta desaparecer los elementos, cuando se desaparecen se actualizan los valores de numeros y operacion, y "nacen" los sgts
+
+				// Debug.Log("__________________________________________________________________________________ÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑÑ");
+				// Debug.Log((GameObject.Find("creador").GetComponent<deployAsteroids>().opcion1).GetComponentInChildren<TextMesh>().text);
+		  //       Debug.Log((GameObject.Find("creador").GetComponent<deployAsteroids>().opcion2).GetComponentInChildren<TextMesh>().text);
+		  //       Debug.Log((GameObject.Find("creador").GetComponent<deployAsteroids>().opcion3).GetComponentInChildren<TextMesh>().text);
+	         	(correct.GetComponentInChildren<SpriteRenderer>().sortingOrder) = 2;
+	    	 	(bad.GetComponentInChildren<SpriteRenderer>().sortingOrder) = 0;
+	    	 	(parch.GetComponentInChildren<SpriteRenderer>().sortingOrder) = 1;
+        
+			
 			}else{
 				Debug.Log("incorrecto");
 				var vidaRestante = int.Parse((GameObject.Find("creador").GetComponent<deployAsteroids>().vida).GetComponentInChildren<TextMesh>().text);
-				((GameObject.Find("creador").GetComponent<deployAsteroids>().vida).GetComponentInChildren<TextMesh>().text) = (vidaRestante - 5).ToString();
+				((GameObject.Find("creador").GetComponent<deployAsteroids>().vida).GetComponentInChildren<TextMesh>().text) = (vidaRestante - 1).ToString();
 			
+				(correct.GetComponentInChildren<SpriteRenderer>().sortingOrder) = 0;
+	    	 	(bad.GetComponentInChildren<SpriteRenderer>().sortingOrder) = 2;
+	    	 	(parch.GetComponentInChildren<SpriteRenderer>().sortingOrder) = 1;
 			}	
+			Destroy((GameObject.Find("creador").GetComponent<deployAsteroids>().opcion1));
+	        Destroy((GameObject.Find("creador").GetComponent<deployAsteroids>().opcion2));
+	        Destroy((GameObject.Find("creador").GetComponent<deployAsteroids>().opcion3));
+	        var contAA = (GameObject.Find("creador").GetComponent<deployAsteroids>().contador);
+        	GameObject.Find("creador").GetComponent<deployAsteroids>().contadorDestroyed = contAA;
+        	Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     	}else{
     		Debug.Log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
     	}
